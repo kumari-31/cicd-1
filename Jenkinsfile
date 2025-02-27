@@ -21,7 +21,7 @@ pipeline {
                 script{
                     sh '''
                     echo 'Buid Docker Image'
-                    docker build -t kumari3123/cicd-e2e:${BUILD_NUMBER} .
+                    docker build -t kumari3123/cicd-1:${BUILD_NUMBER} .
                     '''
                 }
             }
@@ -32,7 +32,7 @@ pipeline {
                 script{
                     sh '''
                     echo 'Push to Repo'
-                    docker push kumari3123/cicd-e2e:${BUILD_NUMBER}
+                    docker push kumari3123/cicd-1:${BUILD_NUMBER}
                     '''
                 }
             }
@@ -41,7 +41,7 @@ pipeline {
         stage('Checkout K8S manifest SCM'){
             steps {
                 git credentialsId: '2a4cd6cb-342a-4322-a9d9-b3b4042a0048', 
-                url: 'https://github.com/iam-veeramalla/cicd-demo-manifests-repo.git',
+                url: 'https://github.com/kumari-31/cicd-2.git',
                 branch: 'main'
             }
         }
@@ -57,7 +57,7 @@ pipeline {
                         git add deploy.yaml
                         git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
                         git remote -v
-                        git push https://github.com/iam-veeramalla/cicd-demo-manifests-repo.git HEAD:main
+                        git push https://github.com/kumari-31/cicd-2.git HEAD:main
                         '''                        
                     }
                 }
