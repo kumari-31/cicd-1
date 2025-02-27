@@ -22,17 +22,17 @@ pipeline {
             REGISTRY_CREDENTIALS = credentials('docker-credentials')
           }
           steps{
-               script{
-                   sh '''
-                   echo 'Buid Docker Image'
-                   docker build -t kumari3123/cicd-1:${BUILD_NUMBER} .
-                   '''
-               }
-           }
+              script{
+                  sh '''
+                      echo 'Buid Docker Image'
+                      docker build -t kumari3123/cicd-1:${BUILD_NUMBER} .
+                  '''
+              }
+          }
         }
 
         stage('Push the artifacts'){
-           steps{
+            steps{
                 script{
                     sh '''
                     echo 'Push to Repo'
