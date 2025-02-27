@@ -25,7 +25,7 @@ pipeline {
                script{
                    sh '''
                    echo 'Buid Docker Image'
-                   sudo docker build -t kumari3123/cicd-1:${BUILD_NUMBER} .
+                   docker build -t kumari3123/cicd-1:${BUILD_NUMBER} .
                    '''
                }
            }
