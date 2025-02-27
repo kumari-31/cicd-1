@@ -33,6 +33,7 @@ pipeline {
                 script{
                     sh '''
                         echo 'Push to Repo'
+                        docker login -u "$REGISTRY_CREDENTIALS_USR" -p "$REGISTRY_CREDENTIALS_PSW"
                         docker push kumari3123/cicd-1:${BUILD_NUMBER}
                     '''
                 }
