@@ -32,14 +32,18 @@ pipeline {
         }
 
         stage('Push the artifacts'){
-            steps{
-                script{
-                    sh '''
-                    echo 'Push to Repo'
-                    docker push kumari3123/cicd-1:${BUILD_NUMBER}
-                    '''
-                }
-            }
+          environment{
+            DOCKERFILE_LOCATION = "cicd-1/Dockerfile"
+            REGISTRY_CREDENTIALS = credentials('docker-credentials')
+          }
+          steps{
+              script{
+                  sh '''
+                      echo 'Push to Repo'
+                      docker push kumari3123/cicd-1:${BUILD_NUMBER}
+                  '''
+              }
+          }
         }
         
         stage('Checkout K8S manifest SCM'){
