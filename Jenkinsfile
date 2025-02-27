@@ -4,6 +4,7 @@ pipeline {
     
     environment {
         IMAGE_TAG = "${BUILD_NUMBER}"
+        REGISTRY_CREDENTIALS = credentials('docker-credentials')
     }
     
     stages {
@@ -17,33 +18,25 @@ pipeline {
         }
         
         stage('Build Docker'){
-          environment{
-            DOCKERFILE_LOCATION = "cicd-1/Dockerfile"
-            REGISTRY_CREDENTIALS = credentials('docker-credentials')
-          }
-          steps{
-              script{
-                  sh '''
-                      echo 'Buid Docker Image'
-                      docker build -t kumari3123/cicd-1:${BUILD_NUMBER} .
-                  '''
-              }
-          }
+            steps{
+                script{
+                    sh '''
+                        echo 'Buid Docker Image'
+                        docker build -t kumari3123/cicd-1:${BUILD_NUMBER} .
+                    '''
+                }
+            }
         }
 
         stage('Push the artifacts'){
-          environment{
-            DOCKERFILE_LOCATION = "cicd-1/Dockerfile"
-            REGISTRY_CREDENTIALS = credentials('docker-credentials')
-          }
-          steps{
-              script{
-                  sh '''
-                      echo 'Push to Repo'
-                      docker push kumari3123/cicd-1:${BUILD_NUMBER}
-                  '''
-              }
-          }
+            steps{
+                script{
+                    sh '''
+                        echo 'Push to Repo'
+                        docker push kumari3123/cicd-1:${BUILD_NUMBER}
+                    '''
+                }
+            }
         }
         
         stage('Checkout K8S manifest SCM'){
