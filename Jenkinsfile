@@ -10,21 +10,25 @@ pipeline {
         
         stage('Checkout'){
            steps {
-                git credentialsId: '5ccc648b-7d72-43e1-9edd-0ef67704e4c0', 
+                git credentialsId: '2a4cd6cb-342a-4322-a9d9-b3b4042a0048',
                 url: 'https://github.com/kumari-31/cicd-1.git',
                 branch: 'main'
            }
         }
-
+        
         stage('Build Docker'){
-            steps{
-                script{
-                    sh '''
-                    echo 'Buid Docker Image'
-                    docker build -t kumari3123/cicd-e2e:${BUILD_NUMBER} .
-                    '''
-                }
-            }
+          environment{
+            DOCKERFILE_LOCATION = "cicd-1/Dockerfile"
+            REGISTRY_CREDENTIALS = credentials('docker-credentials')
+          }
+          steps{
+               script{
+                   sh '''
+                   echo 'Buid Docker Image'
+                   docker build -t kumari3123/cicd-1:${BUILD_NUMBER} .
+                   '''
+               }
+           }
         }
 
         stage('Push the artifacts'){
@@ -32,7 +36,7 @@ pipeline {
                 script{
                     sh '''
                     echo 'Push to Repo'
-                    docker push kumari3123/cicd-e2e:${BUILD_NUMBER}
+                    docker push kumari3123/cicd-1:${BUILD_NUMBER}
                     '''
                 }
             }
@@ -40,8 +44,8 @@ pipeline {
         
         stage('Checkout K8S manifest SCM'){
             steps {
-                git credentialsId: '5ccc648b-7d72-43e1-9edd-0ef67704e4c0', 
-                url: 'https://github.com/iam-veeramalla/cicd-demo-manifests-repo.git',
+                git credentialsId: '2a4cd6cb-342a-4322-a9d9-b3b4042a0048', 
+                url: 'https://github.com/kumari-31/cicd-2.git',
                 branch: 'main'
             }
         }
@@ -49,7 +53,7 @@ pipeline {
         stage('Update K8S manifest & push to Repo'){
             steps {
                 script{
-                    withCredentials([usernamePassword(credentialsId: '5ccc648b-7d72-43e1-9edd-0ef67704e4c0', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                    withCredentials([usernamePassword(credentialsId: '2a4cd6cb-342a-4322-a9d9-b3b4042a0048', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                         sh '''
                         cat deploy.yaml
                         sed -i '' "s/32/${BUILD_NUMBER}/g" deploy.yaml
@@ -57,7 +61,7 @@ pipeline {
                         git add deploy.yaml
                         git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
                         git remote -v
-                        git push https://github.com/iam-veeramalla/cicd-demo-manifests-repo.git HEAD:main
+                        git push https://github.com/kumari-31/cicd-2.git HEAD:main
                         '''                        
                     }
                 }
