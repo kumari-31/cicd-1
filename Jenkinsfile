@@ -33,7 +33,7 @@ pipeline {
                 script{
                     sh '''
                         echo 'Push to Repo'
-                        docker login -u "$REGISTRY_CREDENTIALS_USR" -p "$REGISTRY_CREDENTIALS_PSW"
+                        echo "$REGISTRY_CREDENTIALS_PSW" | docker login -u "$REGISTRY_CREDENTIALS_USR" --password-stdin
                         docker push kumari3123/cicd-1:${BUILD_NUMBER}
                     '''
                 }
@@ -54,7 +54,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: '2a4cd6cb-342a-4322-a9d9-b3b4042a0048', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                         sh '''
                             cat deploy.yaml
-                            sed -i '' "s/32/${BUILD_NUMBER}/g" deploy.yaml
+                            sed -i "s/32/${BUILD_NUMBER}/g" deploy.yaml
                             cat deploy.yaml
                             git add deploy.yaml
                             git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
