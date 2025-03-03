@@ -42,7 +42,7 @@ pipeline {
         
         stage('Checkout K8S manifest SCM(cicd-2)'){
             steps {
-                git credentialsId: '2a4cd6cb-342a-4322-a9d9-b3b4042a0048', 
+                git credentialsId: '9cdf6c50-bb39-4fe9-96bc-89dfddee2ff4', 
                     url: 'https://github.com/kumari-31/cicd-2.git',
                     branch: 'main'
             }
@@ -51,7 +51,7 @@ pipeline {
         stage('Update K8S manifest & push to Repo(cicd-2)'){
             steps {
                 script{
-                    withCredentials([usernamePassword(credentialsId: '2a4cd6cb-342a-4322-a9d9-b3b4042a0048', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                    withCredentials([usernamePassword(credentialsId: '9cdf6c50-bb39-4fe9-96bc-89dfddee2ff4', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                         sh '''
                             git config user.email "skumari@cdac.in"
                             git config user.name "kumari-31"
