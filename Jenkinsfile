@@ -55,8 +55,8 @@ pipeline {
                         sh '''
                             cat pipeline/deploy.yaml
                             sed -i "s/32/${BUILD_NUMBER}/g" pipeline/deploy.yaml
-                            cat deploy.yaml
-                            git add deploy.yaml
+                            cat pipeline/deploy.yaml
+                            git add pipeline/deploy.yaml
                             git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
                             git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/kumari-31/cicd-2.git
                             git push https://github.com/kumari-31/cicd-2.git HEAD:main
