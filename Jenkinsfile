@@ -40,27 +40,27 @@ pipeline {
             }
         }
         
-        stage('Checkout K8S manifest SCM(cicd)'){
+        stage('Checkout K8S manifest SCM(cicd-2)'){
             steps {
-                git credentialsId: '7d53d6c5-61e7-4efc-9c05-34a4e3d9794f', 
-                    url: 'https://github.com/kumari-31/cicd.git',
+                git credentialsId: '9cdf6c50-bb39-4fe9-96bc-89dfddee2ff4', 
+                    url: 'https://github.com/kumari-31/cicd-2.git',
                     branch: 'main'
             }
         }
         
-        stage('Update K8S manifest & push to Repo(cicd)'){
+        stage('Update K8S manifest & push to Repo(cicd-2)'){
             steps {
                 script{
-                    withCredentials([usernamePassword(credentialsId: '7d53d6c5-61e7-4efc-9c05-34a4e3d9794f', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                    withCredentials([usernamePassword(credentialsId: '9cdf6c50-bb39-4fe9-96bc-89dfddee2ff4', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                         sh '''
                             git config user.email "skumari@cdac.in"
                             git config user.name "kumari-31"
-                            cat yamlfiles/deploy.yaml
-                            sed -i "s/PLACEHOLDER/${BUILD_NUMBER}/g" yamlfiles/deploy.yaml
-                            cat yamlfiles/deploy.yaml
-                            git add yamlfiles/deploy.yaml
+                            cat files/deploy.yaml
+                            sed -i "s/PLACEHOLDER/${BUILD_NUMBER}/g" files/deploy.yaml
+                            cat files/deploy.yaml
+                            git add files/deploy.yaml
                             git commit -m 'Updated the deploy yaml | Pipeline'
-                            git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/kumari-31/cicd.git
+                            git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/kumari-31/cicd-2.git
                             git push origin HEAD:main
                         '''                        
                     }
