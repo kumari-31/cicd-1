@@ -56,7 +56,7 @@ pipeline {
                             git config user.email "skumari@cdac.in"
                             git config user.name "kumari-31"
                             cat files/deploy.yaml
-                            sed -i "s/PLACEHOLDER/${BUILD_NUMBER}/g" files/deploy.yaml
+                            sed -i "s/24/${BUILD_NUMBER}/g" files/deploy.yaml
                             cat files/deploy.yaml
                             git add files/deploy.yaml
                             git commit -m 'Updated the deploy yaml | Pipeline'
