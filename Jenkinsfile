@@ -58,9 +58,8 @@ pipeline {
                             cat files/deploy.yaml
                             current_number=29
                             incremented_number=$((current_number + 1))
-                            sed -i "s/${incremented_number}/g" files/deploy.yaml
+                            sed -i "s/${incremented_number}/${BUILD_NUMBER}/g" files/deploy.yaml
                             current_number=$incremented_number
-                            sed -i "s/current_number/${BUILD_NUMBER}/g" files/deploy.yaml
                             cat files/deploy.yaml
                             git add files/deploy.yaml
                             git commit -m 'Updated the deploy yaml | Pipeline'
