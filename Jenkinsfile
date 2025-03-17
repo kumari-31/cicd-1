@@ -56,7 +56,7 @@ pipeline {
                             git config user.email "skumari@cdac.in"
                             git config user.name "kumari-31"
                             cat files/deploy.yaml
-                            current_number=$(grep -o '[0-9]\+' files/deploy.yaml | head -n 1)
+                            current_number=$(grep -o '[0-9]\\+' files/deploy.yaml | head -n 1)
                             incremented_number=$((current_number + 1))
                             sed -i "s/${current_number}/${incremented_number}/g" files/deploy.yaml
                             sed -i "s/28/${BUILD_NUMBER}/g" files/deploy.yaml
