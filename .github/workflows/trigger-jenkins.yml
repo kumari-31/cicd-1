@@ -7,14 +7,12 @@ on:
 
 jobs:
   trigger:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
-      - name: Trigger Jenkins via SSH
-        uses: appleboy/ssh-action@v1.1.0
-        with:
-          host: 10.184.61.211       # Jenkins server IP
-          username: lakshmi         # SSH login user
-          key: ${{ secrets.JENKINS_SSH_KEY }}  # Private SSH key
-          script: |
-            # Trigger Jenkins job using admin password
-            curl -X POST http://localhost:8080/job/cicd-pipeline/build --user "admin:admin"
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy inside local server
+        run: |
+          echo "Now I am inside the private network"
+          ssh lakshmi@10.184.61.211 'ls -l'
