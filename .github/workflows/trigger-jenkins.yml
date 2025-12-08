@@ -1,0 +1,20 @@
+name: Trigger Jenkins Job
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Jenkins via SSH
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: 10.184.61.211       # Jenkins server IP
+          username: lakshmi         # SSH login user
+          key: ${{ secrets.JENKINS_SSH_KEY }}  # Private SSH key
+          script: |
+            # Trigger Jenkins job using admin password
+            curl -X POST http://localhost:8080/job/cicd-pipeline/build --user "admin:admin"
