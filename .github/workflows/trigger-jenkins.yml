@@ -1,4 +1,4 @@
-name: Trigger Jenkins Job
+name: Trigger Jenkins
 
 on:
   push:
@@ -7,12 +7,15 @@ on:
 
 jobs:
   trigger:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Deploy inside local server
+      - name: Trigger Jenkins via curl
+        env:
+          JENKINS_USER: admin
+          JENKINS_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
+          JENKINS_URL: http://10.184.61.211:8080
+          JOB_NAME: cicd-pipeline
         run: |
-          echo "Now I am inside the private network"
-          ssh lakshmi@10.184.61.211 'ls -l'
+          curl -X POST "$JENKINS_URL/job/$JOB_NAME/build" \
+            --user "$JENKINS_USER:$JENKINS_TOKEN"
+
