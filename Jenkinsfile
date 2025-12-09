@@ -1,6 +1,6 @@
 pipeline {
     
-    agent any
+    agent any 
     
     environment {
         IMAGE_TAG = "${BUILD_NUMBER}"
@@ -8,29 +8,6 @@ pipeline {
     }
     
     stages {
-        
-        stage('Stop if no changes') {
-            steps {
-                script {
-                    def changeLogSets = currentBuild.changeSets
-                    def hasChanges = false
-                    
-                    for (int i = 0; i < changeLogSets.size(); i++) {
-                        def entries = changeLogSets[i].items
-                        if (entries.length > 0) {
-                            hasChanges = true
-                            break
-                        }
-                    }
-
-                    if (!hasChanges) {
-                        echo " No SCM changes detected. Stopping pipeline."
-                        currentBuild.result = 'NOT_BUILT'
-                        error("No changes – stopping pipeline.")
-                    }
-                }
-            }
-        }
         
         stage('Checkout'){
            steps {
@@ -81,12 +58,10 @@ pipeline {
                             cat files/deploy.yaml
                             sed -i "s/\\(kumari3123\\/cicd-1:\\)[0-9]\\+/\\1${BUILD_NUMBER}/g" files/deploy.yaml
                             cat files/deploy.yaml
-                            git diff --quiet files/deploy.yaml || {
-                                git add files/deploy.yaml
-                                git commit -m 'Updated the deploy yaml | Pipeline'
-                                git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/kumari-31/cicd-2.git
-                                git push origin HEAD:main
-                           }
+                            git add files/deploy.yaml
+                            git commit -m 'Updated the deploy yaml | Pipeline'
+                            git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/kumari-31/cicd-2.git
+                            git push origin HEAD:main
                         '''                        
                     }
                 }
