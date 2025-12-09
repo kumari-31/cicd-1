@@ -58,10 +58,15 @@ pipeline {
                             cat files/deploy.yaml
                             sed -i "s/\\(kumari3123\\/cicd-1:\\)[0-9]\\+/\\1${BUILD_NUMBER}/g" files/deploy.yaml
                             cat files/deploy.yaml
-                            git add files/deploy.yaml
-                            git commit -m 'Updated the deploy yaml | Pipeline'
-                            git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/kumari-31/cicd-2.git
-                            git push origin HEAD:main
+                            # Check if there are any changes
+                            if ! git diff --quiet; then
+                                git add files/deploy.yaml
+                                git commit -m 'Updated the deploy yaml | Pipeline [ci skip]'
+                                git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/kumari-31/cicd-2.git
+                                git push origin HEAD:main
+                            else
+                               echo "No changes to commit"
+                            fi
                         '''                        
                     }
                 }
