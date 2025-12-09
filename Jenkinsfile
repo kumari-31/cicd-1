@@ -9,6 +9,29 @@ pipeline {
     
     stages {
         
+        stage('Stop if no changes') {
+            steps {
+                script {
+                    def changeLogSets = currentBuild.changeSets
+                    def hasChanges = false
+                    
+                    for (int i = 0; i < changeLogSets.size(); i++) {
+                        def entries = changeLogSets[i].items
+                        if (entries.length > 0) {
+                            hasChanges = true
+                            break
+                        }
+                    }
+
+                    if (!hasChanges) {
+                        echo " No SCM changes detected. Stopping pipeline."
+                        currentBuild.result = 'NOT_BUILT'
+                        error("No changes – stopping pipeline.")
+                    }
+                }
+            }
+        }
+        
         stage('Checkout'){
            steps {
                 git credentialsId: '2a4cd6cb-342a-4322-a9d9-b3b4042a0048',
